@@ -18,7 +18,7 @@ async def telegram_webhook(req: Request):
 async def health():
     return {"ok": True}
 
-@router.post("/scheduler")
+@router.api_route("/scheduler", methods=["GET", "POST"])
 async def scheduler_endpoint():
     await tick_scheduler()
     return {"status": "tick"}
