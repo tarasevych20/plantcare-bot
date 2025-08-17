@@ -10,15 +10,11 @@ settings = get_settings()
 @router.post(f"/webhook/{settings.WEBHOOK_SECRET_PATH}")
 async def telegram_webhook(req: Request):
     data = await req.json()
-    update = types.Update(**data)
+    try:
+        # aiogram 3.x + pydantic v2: валідуємо так
+        update = types.Update.model_validate(data)
+    except Exception as e:
+        print(f"[WARN] update parse failed: {e} | data={data}")
+        return Response(status_code=200)
     await dp.feed_update(bot, update)
     return Response(status_code=200)
-
-@router.get("/health")
-async def health():
-    return {"ok": True}
-
-@router.api_route("/scheduler", methods=["GET", "POST"])
-async def scheduler_endpoint():
-    await tick_scheduler()
-    return {"status": "tick"}
