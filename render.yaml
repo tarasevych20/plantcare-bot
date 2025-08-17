@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: plantcare-bot
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    autoDeploy: true
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: WEBHOOK_SECRET_PATH
+        sync: false
+      - key: PUBLIC_BASE_URL
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: DEFAULT_TZ
+        value: Europe/Kyiv
+      - key: DEFAULT_NOTIFY_TIME
+        value: "09:00"
