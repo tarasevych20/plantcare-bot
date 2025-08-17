@@ -1,0 +1,26 @@
+[
+  {
+    "species_key": "monstera_deliciosa",
+    "water_every_days": 7,
+    "fertilize_every_days": 30,
+    "wipe_every_days": 14,
+    "repot_months": 18,
+    "notes": "Світле розсіяне освітлення, без прямих полуденних променів."
+  },
+  {
+    "species_key": "zamioculcas_zamiifolia",
+    "water_every_days": 14,
+    "fertilize_every_days": 45,
+    "wipe_every_days": 21,
+    "repot_months": 24,
+    "notes": "Пересихання ґрунту між поливами; чутливий до перезволоження."
+  },
+  {
+    "species_key": "spathiphyllum_wallisi",
+    "water_every_days": 5,
+    "fertilize_every_days": 30,
+    "wipe_every_days": 10,
+    "repot_months": 18,
+    "notes": "Напівтінь, вологе повітря, без протягів."
+  }
+]
