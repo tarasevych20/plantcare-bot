@@ -1,0 +1,13 @@
+name: Scheduler Ping
+on:
+  schedule:
+    - cron: "*/5 * * * *"   # кожні 5 хв
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call /scheduler
+        run: |
+          curl -fsS -X GET "https://<твій-домен>.onrender.com/scheduler" || true
