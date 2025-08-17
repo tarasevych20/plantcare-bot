@@ -10,4 +10,4 @@ jobs:
     steps:
       - name: Call /scheduler
         run: |
-          curl -fsS -X GET "https://<твій-домен>.onrender.com/scheduler" || true
+          curl -fsS -X GET "https://plantcare-bot-ja2b.onrender.com/scheduler" || true
