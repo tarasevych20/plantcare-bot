@@ -1,19 +1,24 @@
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.engine.url import make_url
 from .config import get_settings
 
 settings = get_settings()
-if not settings.DATABASE_URL:
-    # Для локальної розробки можна тимчасово підставити SQLite, але в проді — тільки Postgres.
-    # engine = create_async_engine("sqlite+aiosqlite:///./dev.db", echo=False)
-    pass
 
-engine = create_async_engine(settings.DATABASE_URL, echo=False, pool_pre_ping=True)
-SessionLocal = async_sessionmaker(engine, expire_on_commit=False)
+def _normalize_db_url(url: str) -> str:
+    u = make_url(url)
+    q = dict(u.query) if u.query else {}
+    # asyncpg не знає про sslmode / channel_binding
+    q.pop("sslmode", None)
+    q.pop("channel_binding", None)
+    # для asyncpg достатньо ssl=true (створює дефолтний SSLContext)
+    q.setdefault("ssl", "true")
+    return str(u.set(query=q))
 
-class Base(DeclarativeBase):
-    pass
+DATABASE_URL = _normalize_db_url(settings.DATABASE_URL)
 
-async def get_db() -> AsyncSession:
-    async with SessionLocal() as session:
-        yield session
+engine = create_async_engine(
+    DATABASE_URL,
+    pool_pre_ping=True,
+    future=True,
+)
+SessionLocal = async_sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
