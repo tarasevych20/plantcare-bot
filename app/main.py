@@ -10,8 +10,8 @@ app.include_router(router)
 # aiogram routers
 dp.include_router(start_handlers.router)
 
-@app.get("/")
-async def root():
+@app.get("/health", include_in_schema=False)
+async def health():
     return {"ok": True}
 
 @app.on_event("startup")
